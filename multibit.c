@@ -59,7 +59,7 @@ void insertMyAlgo(unsigned int addr,unsigned int netmask,unsigned int gw) {
 			//cas merdique final
 			unsigned char shift = walk+strides[deep]-cidr;
 			unsigned char min = (index>>shift)<<shift;
-			unsigned char max = min + 1<<shift;
+			unsigned char max = min + (1<<shift);
 			setChildsRange(local,min,max,gw,deep);
 		}
 		else if(walk+strides[deep]==cidr){
