@@ -75,7 +75,7 @@ int main (int argc,char *argv[])
  	struct in_addr a; 
  
 	initMyAlgo();  
-	if ((argc > 1 ) && (loadFile(argv[1])) { 
+	if ((argc > 1 ) && loadFile(argv[1])) { 
 		printf("IP lookup algo\n");
 		while (1) {
 			fgets(s,MAXLEN,stdin);
