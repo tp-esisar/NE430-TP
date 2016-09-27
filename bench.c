@@ -1,3 +1,6 @@
+//TODO lancer une série de recherche aléatoire pour tester l'efficacité du merdier avec time
+//sera utilié par l'algo génétique pour noter les individus
+
 #include <stdlib.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -6,13 +9,6 @@
 #include <string.h> 
 
 #define MAXLEN 100 
-
-void initMyAlgo();
-
-void insertMyAlgo(unsigned int addr,unsigned int netmask,unsigned int gw);
-
-unsigned int lookupMyAlgo(unsigned int addr);
- 
 #include "multibit.c"
 
 // This function must not be modified !!! 

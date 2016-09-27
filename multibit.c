@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "main.c"
+
 
 
 typedef struct Node {
