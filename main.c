@@ -78,6 +78,7 @@ int main (int argc,char *argv[])
 	if ((argc > 1 ) && loadFile(argv[1])) { 
 		printf("IP lookup algo\n");
 		while (1) {
+
 			fgets(s,MAXLEN,stdin);
 			s[MAXLEN]=0; 
 			if (inet_aton(s,&a) == 0 ) continue; 

@@ -48,12 +48,12 @@ void setChildsRange(Node* node, unsigned char min, unsigned char max, unsigned i
 void insertMyAlgo(unsigned int addr,unsigned int netmask,unsigned int gw) {
 	unsigned char walk = 0;
 	unsigned char deep = 0;
-	Node* local = tree;
 	unsigned char cidr = getCIDR(netmask);
 	if(tree == NULL) {
 		tree = newNode(strides[0],0);
 	}
-	while(walk < cidr) {
+	Node* local = tree;
+	while(1) {
 		unsigned char index = (addr<<walk)>>(32-strides[deep]);
 		if(walk+strides[deep]>cidr) {
 			//cas merdique final
@@ -61,6 +61,7 @@ void insertMyAlgo(unsigned int addr,unsigned int netmask,unsigned int gw) {
 			unsigned char min = (index>>shift)<<shift;
 			unsigned char max = min + (1<<shift);
 			setChildsRange(local,min,max,gw,deep);
+			return;
 		}
 		else if(walk+strides[deep]==cidr){
 			//cas simple final
@@ -70,6 +71,7 @@ void insertMyAlgo(unsigned int addr,unsigned int netmask,unsigned int gw) {
 			else {
 				local->childs[index]->gw = gw;
 			}
+			return;
 		}
 		else {
 			//cas intermédiaire
