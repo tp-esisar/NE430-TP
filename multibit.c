@@ -9,8 +9,8 @@ typedef struct Node {
 }Node;
 
 Node* tree = NULL;
-//char strides[32];
-char strides[] = {16,8,4,2,2};
+char strides[32];
+//char strides[] = {16,8,4,2,2};
 
 
 void initMyAlgo() {}

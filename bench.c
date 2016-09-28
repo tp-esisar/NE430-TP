@@ -7,7 +7,9 @@
 #include <arpa/inet.h>
 #include <stdio.h> 
 #include <string.h> 
+#include <time.h>
 
+#define NBADRESSE 1000000000 
 #define MAXLEN 100 
 #include "multibit.c"
 
@@ -64,26 +66,30 @@ int loadFile(char *path)
 	return 1; 
 }
 
-// only for debug purpose might be modified ! 
 int main (int argc,char *argv[])
 {
-	char s[MAXLEN];
-	int addr; 
- 	struct in_addr a; 
- 
-	initMyAlgo();  
-	if ((argc > 1 ) && loadFile(argv[1])) { 
-		printf("IP lookup algo\n");
-		while (1) {
+	int i, nbMiss=0;
+	unsigned int addr;
 
-			fgets(s,MAXLEN,stdin);
-			s[MAXLEN]=0; 
-			if (inet_aton(s,&a) == 0 ) continue; 
-			addr=htonl(a.s_addr);
-			a.s_addr=htonl(lookupMyAlgo(addr)); 
-			printf("GW found = %s\n",inet_ntoa(a)); 		 
-		}	
+	if (argc <= 1)
+		return -1;
+
+	for (i=1; i<argc; i++)
+		strides[i-1]=atoi(argv[i]);
+	if (loadFile("routes") != 1)
+		return (-1);
+
+	initMyAlgo(); 
+	srand(time(NULL));
+	printf("IP lookup algo\n");
+
+	for (i=0; i<NBADRESSE; i++) {
+		addr = rand() % 4294967296;
+		if (lookupMyAlgo(addr) == 0)
+			nbMiss++;
 	}
+	printf("%d tentatives, %d echouée", NBADRESSE, nbMiss);
+
 	return 0; 	 
 }
 
