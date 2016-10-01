@@ -98,7 +98,7 @@ int loadTestFile(char *path)
 		// call your function to insert entry to routing table 
 		try = lookupMyAlgo(addr);
 		if(try != gw) {
-			printf("correctness test fail line %d\n",ligne);
+			printf("correctness test fail line %d get :%x instead of: %x\n",ligne, try, gw);
 			errors++;
 		}
 		ligne++;
@@ -122,6 +122,7 @@ int main (int argc,char *argv[])
 		else {
 			printf("correctness OK\n");
 		}
+		
 		return err;
 	}
 	return -1; 	 
