@@ -4,12 +4,11 @@ local module = {}
 
 function module:display(pop, simOut)
     local i, v, g
-    
     for i, v in ipairs(pop) do 
         
         io.write("ID: ", i, "\tScore: ")
         if (not simOut) then
-            io.write("noscore")
+            io.write("no score")
         else
             io.write(simOut[i])
         end

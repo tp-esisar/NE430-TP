@@ -1,10 +1,12 @@
 local module = {}
 
 
+
+
+
 function module:generatePopulation() 
     
-    local ffi = require "ffi"
-    local Genome = ffi.typeof("float[?]")
+    local Genome = param.genomeConstruct
     math.randomseed(param.genomeSeed)
     local population = {}
     local i

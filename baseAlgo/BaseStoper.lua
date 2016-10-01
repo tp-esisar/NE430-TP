@@ -2,6 +2,9 @@ local module = {}
 
 
 function module:check(state)
+	if param.nbSimul == -1 then
+		return true
+	end
     if (state.iterations > param.nbSimul) then
         return false
     else
