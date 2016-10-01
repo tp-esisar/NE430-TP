@@ -9,7 +9,7 @@
 #include <string.h> 
 #include <time.h>
 
-#define NBADRESSE 1000000000 
+#define NBADRESSE 1000000
 #define MAXLEN 100 
 #include "multibit.c"
 
@@ -70,25 +70,33 @@ int main (int argc,char *argv[])
 {
 	int i, nbMiss=0;
 	unsigned int addr;
+	clock_t start, end;
+ 	double cpu_time_used;
 
 	if (argc <= 1)
 		return -1;
 
 	for (i=1; i<argc; i++)
 		strides[i-1]=atoi(argv[i]);
+	start = clock();
 	if (loadFile("routes") != 1)
 		return (-1);
-
+ 	end = clock();
+ 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+ 	fprintf(stderr, "%f\n", cpu_time_used);
 	initMyAlgo(); 
 	srand(time(NULL));
-	printf("IP lookup algo\n");
-
+	//printf("IP lookup algo\n");
+	start = clock();
 	for (i=0; i<NBADRESSE; i++) {
 		addr = rand() % 4294967296;
 		if (lookupMyAlgo(addr) == 0)
 			nbMiss++;
 	}
-	printf("%d tentatives, %d echouée", NBADRESSE, nbMiss);
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+ 	fprintf(stderr, "%f\n", cpu_time_used);
+	//printf("%d tentatives, %d echouée", NBADRESSE, nbMiss);
 
 	return 0; 	 
 }
