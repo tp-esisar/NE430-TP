@@ -65,7 +65,7 @@ int loadTestFile(char *path)
 {
 	FILE *fi;
 	char s[MAXLEN],*p,*start,ligne=1; 
- 	struct in_addr c; 
+ 	struct in_addr c,t; 
 	unsigned int addr,gw,try,errors=0; 
 
 
@@ -98,7 +98,11 @@ int loadTestFile(char *path)
 		// call your function to insert entry to routing table 
 		try = lookupMyAlgo(addr);
 		if(try != gw) {
-			printf("correctness test fail line %d get :%x instead of: %x\n",ligne, try, gw);
+			t.s_addr = htonl(try);
+			printf("correctness test fail line %d get :%s ",ligne, inet_ntoa(t));
+			t.s_addr = htonl(gw);
+			printf("instead of %s\n", inet_ntoa(t));
+			
 			errors++;
 		}
 		ligne++;

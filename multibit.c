@@ -93,7 +93,7 @@ unsigned int lookupMyAlgo(unsigned int addr) {
 			bestMatchGw = local->gw;
 		}
 		if(local->childs[index]==NULL) {
-			return bestMatchGw;
+			return local->gw;
 		}
 		else {
 			local = local->childs[index];
