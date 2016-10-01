@@ -4,24 +4,26 @@
 
 typedef struct Node {
 	unsigned int gw;
+	char cidr;
     struct Node* childs[];
 
 }Node;
 
 Node* tree = NULL;
-char strides[32];
-//char strides[] = {16,8,4,2,2};
+//char strides[32];
+char strides[] = {16,8,4,2,2};
 
 
 void initMyAlgo() {}
 
-Node* newNode(char stride, unsigned int gw) {
+Node* newNode(char stride, unsigned int gw, char cidr) {
 	Node* temp = calloc((sizeof(unsigned int)+sizeof(Node*)*(1<<stride)),1);
 	if (temp == NULL) {
 		fprintf(stderr, "erreur malloc newNode");
 		exit(1);
 	}
 	temp->gw = gw;
+	temp->cidr = cidr;
 	return temp;
 }
 
@@ -33,14 +35,14 @@ char getCIDR(unsigned int netmask) {
 	return i;
 }
 
-void setChildsRange(Node* node, unsigned char min, unsigned char max, unsigned int gw, unsigned char deep) {
-	Node* temp = NULL;
+void setChildsRange(Node* node, unsigned char min, unsigned char max, unsigned int gw, char cidr,char stride) {
 	for(unsigned char i = min;i<max;i++) {
-		if(node->childs[i]==NULL) {
-			if(temp == NULL) {
-				temp = newNode(strides[deep],gw);
-			}
-			node->childs[i] = temp;
+		if(node->childs[i] == NULL) {
+			node->childs[i] = newNode(stride,gw,cidr);
+		}
+		else if (node->childs[i]->cidr <= cidr) {
+			node->childs[i]->cidr = cidr;
+			node->childs[i]->gw = gw;
 		}
 	}
 }
@@ -50,33 +52,34 @@ void insertMyAlgo(unsigned int addr,unsigned int netmask,unsigned int gw) {
 	unsigned char deep = 0;
 	unsigned char cidr = getCIDR(netmask);
 	if(tree == NULL) {
-		tree = newNode(strides[0],0);
+		tree = newNode(strides[0],0,0);
 	}
 	Node* local = tree;
 	while(1) {
 		unsigned char index = (addr<<walk)>>(32-strides[deep]);
-		if(walk+strides[deep]>cidr) {
+		if(walk+strides[deep]>=cidr) {
 			//cas merdique final
 			unsigned char shift = walk+strides[deep]-cidr;
 			unsigned char min = (index>>shift)<<shift;
 			unsigned char max = min + (1<<shift);
-			setChildsRange(local,min,max,gw,deep);
+			setChildsRange(local,min,max,gw,cidr,strides[deep+1]);
 			return;
 		}
-		else if(walk+strides[deep]==cidr){
+		/*else if(walk+strides[deep]==cidr){
 			//cas simple final
 			if(local->childs[index]==NULL) {
-				local->childs[index] = newNode(strides[deep+1],gw);
+				local->childs[index] = newNode(strides[deep+1],gw,cidr);
 			}
-			else {
-				local->childs[index]->gw = gw;
+			else if(local->childs[index]->cidr <= cidr) {
+					local->childs[index]->gw = gw;
+					local->childs[index]->cidr = cidr;
 			}
 			return;
-		}
+		}*/
 		else {
 			//cas intermédiaire
 			if(local->childs[index]==NULL) {
-				local->childs[index] = newNode(strides[deep+1],0);
+				local->childs[index] = newNode(strides[deep+1],0,0);
 			}
 			local = local->childs[index];
 			walk += strides[deep];
