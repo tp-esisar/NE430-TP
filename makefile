@@ -13,5 +13,5 @@ test-%: % test
 	./test $< testfile
 
 bench: bench.c multibit.c
-	gcc -g -Wall bench.c -o bench
+	gcc -O3 bench.c -o bench
 

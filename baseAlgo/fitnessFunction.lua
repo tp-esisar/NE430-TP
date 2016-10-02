@@ -23,6 +23,6 @@ end
 
 --module:fitnessFunc(" 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1")
 --module:fitnessFunc(" 16 8 4 2 2")
-
+module:fitnessFunc(" 9 10 3 4 6")
 
 return module
