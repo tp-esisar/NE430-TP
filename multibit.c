@@ -26,8 +26,8 @@ typedef struct __attribute__((__packed__)) Node {
 
 
 Node* tree = NULL;
-char strides[32];
-//char strides[] = {16,8,4,2,2};
+//lschar strides[32];
+char strides[] = {9,10,3,4,6};
 
 
 void initMyAlgo() {}
