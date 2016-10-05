@@ -4,10 +4,11 @@
 #include <arpa/inet.h>
 #include <stdio.h> 
 #include <string.h> 
+#include <time.h>
 
 #define MAXLEN 100 
 
-#include "multibit.c"
+#include "MyAlgo.c"
 
 // This function must not be modified !!! 
 int loadFile(char *path) 
@@ -115,12 +116,23 @@ int loadTestFile(char *path)
 int main (int argc,char *argv[])
 {
  	int err;
+	clock_t start, end;
+ 	double cpu_time_used;
  	printf("--- Init algo ---\n");
 	initMyAlgo(); 
 	printf("--- Load route file \"%s\" ---\n",argv[1]); 
+	start = clock();
 	if ((argc > 2 ) && loadFile(argv[1])) { 
+		end = clock();
+ 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+ 		fprintf(stderr, "temps chargement des routes: %f\n", cpu_time_used);
 		printf("--- Run test file \"%s\" +++\n",argv[2]); 
-		if((err=loadTestFile(argv[2]))!=0) {
+		start = clock();
+		err=loadTestFile(argv[2]);
+		end = clock();
+ 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+ 		fprintf(stderr, "temps lecture des routes: %f\n", cpu_time_used);
+		if(err!=0) {
 			printf("Error correctness\n");
 		}	 
 		else {
